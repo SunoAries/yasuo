@@ -1,16 +1,19 @@
 package main
 
 import (
-    "fmt"
-    "rsc.io/quote"
-    "net/http"
+	"log"
+	"net/http"
+	"time"
 )
 
 func main() {
-    resp, err := http.Get("http://example.com/")
-    if err != nil {
-        fmt.Println("请求错误")
+	var myHandler http.Handler =
+	s := &http.Server{
+        Addr:           ":8080",
+        Handler:        myHandler,
+        ReadTimeout:    10 * time.Second,
+        WriteTimeout:   10 * time.Second,
+        MaxHeaderBytes: 1 << 20,
     }
-    fmt.Print(resp)
-    fmt.Println(quote.Hello())
+    log.Fatal(s.ListenAndServe())
 }
